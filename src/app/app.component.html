@@ -1,0 +1,59 @@
+<div class="container">
+  <h1 class="page-header">Taxi booking form</h1>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="usr">Pickup address</label>
+        <app-search-box (directions)="getSourceLocation($event)"></app-search-box>
+        <div class="alert alert-danger pickup-error" *ngIf="isFormSubmitted && !this.dir.origin">
+          Please enter pickup address
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="usr">Destination address</label>
+        <app-search-box (directions)="getDestinationLocation($event)"></app-search-box>
+        <div class="alert alert-danger pickup-error" *ngIf="isFormSubmitted && !this.dir.destination">
+          Please enter destination address
+        </div>
+      </div>
+      <form autocomplete="off" [formGroup]="contactForm" (ngSubmit)="onSubmit(contactForm)">
+        <fieldset>
+          <div class="form-group">
+            <label for="usr">Mobile number</label>
+            <input class="form-control" type="text" [maxLength]="10" placeholder="Enter mobile nuber" formControlName="mobileNumber"
+              [(ngModel)]="mobileNumber" />
+            <div class="alert alert-danger" *ngIf="(contactForm.controls['mobileNumber'].hasError('pattern') && contactForm.controls['mobileNumber'].dirty) 
+                 || (isFormSubmitted && contactForm.controls['mobileNumber'].hasError('required'))">
+              Please enter a valid australian number
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="usr">Pickup date/time</label>
+            <input class="form-control" type="datetime-local" step="1" formControlName="dateTime" [(ngModel)]="dateTime">
+            <div class="alert alert-danger" *ngIf="isFormSubmitted && contactForm.controls['dateTime'].hasError('required')">
+              Please enter pickup date and time
+            </div>
+            <div class="alert alert-danger" *ngIf="isDateInValid && !contactForm.controls['dateTime'].hasError('required')">
+              Please enter date within next 48 hours
+            </div>
+          </div>
+
+          <button class="btn btn-primary" type="submit">Save</button>
+        </fieldset>
+      </form>
+    </div>
+
+    <div class="col-md-6">
+      <agm-map [latitude]="latFrom" [longitude]="lngFrom" *ngIf="dir.origin && dir.destination" class="img-thumbnail">
+        <agm-direction [origin]="dir.origin" [destination]="dir.destination"></agm-direction>
+      </agm-map>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <app-trip-table [tableData]="tableData | async"></app-trip-table>
+    </div>
+  </div>
+</div>

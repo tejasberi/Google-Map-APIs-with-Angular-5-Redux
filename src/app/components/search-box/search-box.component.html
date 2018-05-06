@@ -1,0 +1,7 @@
+<div class="form-group search-container">
+  <input type="text" placeholder="Search for Location" autocorrect="off" autocapitalize="off" spellcheck="off" class="form-control"
+    #search1>
+  <div class="alert alert-danger" *ngIf="!isAussieAddress && isAddressSelected">
+    Please enter australian postal address
+  </div>
+</div>

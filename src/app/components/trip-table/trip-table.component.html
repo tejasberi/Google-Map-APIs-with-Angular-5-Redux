@@ -1,0 +1,22 @@
+<div *ngIf="tableData.data">
+  <table class="table table-striped" *ngIf="tableData.loaded">
+    <thead>
+      <tr>
+        <th>Trip#</th>
+        <th>Pick-up Address</th>
+        <th>Drop-off address</th>
+        <th>Distance</th>
+        <th>Travel time</th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let row of tableData.data | keys; let i = index">
+      <tr *ngIf="i < 3">
+        <td>{{i + 1}}</td>
+        <td>{{row.value.pickUpAddress}}</td>
+        <td>{{row.value.dropAddress}}</td>
+        <td>{{row.value.distance}}</td>
+        <td>{{row.value.duration}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
